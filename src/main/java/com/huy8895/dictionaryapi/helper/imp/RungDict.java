@@ -16,13 +16,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class RungDict extends DictAbstract {
     Connection conn;
     Document doc;
-
-    private static final String COMMON_WORD = "Thông dụng";
 
     @Autowired
     public RungDict(@Value("${dictionary.api.rung}") String url) {
@@ -58,36 +57,42 @@ public class RungDict extends DictAbstract {
         ArrayList<Part> parts = new ArrayList<>();
         ArrayList<String> means = new ArrayList<>();
         for (Element element : select_pronoun) {
-            if (element.tagName()
-                       .equals(HtmlTag.SPAN.getTag())) {
+            boolean isPronounce = element.tagName()
+                                         .equals(HtmlTag.SPAN.getTag());
+            boolean isCategory = element.tagName()
+                                        .equals(HtmlTag.H2.getTag());
+            boolean isPart = element.tagName()
+                                    .equals(HtmlTag.H3.getTag());
+            boolean isMean = element.tagName()
+                                    .equals(HtmlTag.H5.getTag());
+
+            if (isPronounce) {
                 rungWord.setPronounce(element.text());
             }
-            if (element.tagName()
-                       .equals(HtmlTag.H2.getTag())) {
-                if (parts.size() > 0) {
-                    if (means.size() > 0) {
-                        part.setMeans(means);
-                        means = new ArrayList<>();
+
+            if (isCategory) {
+                if (!parts.isEmpty()) {
+                    if (!means.isEmpty()) {
+                        part.setMeans((List<String>) means.clone());
+                        means.clear();
                         parts.add(part.clone());
                     }
-                    category.setParts(parts);
-                    parts = new ArrayList<>();
+                    category.setParts((List<Part>) parts.clone());
+                    parts.clear();
                     categories.add(category.clone());
                 }
                 category.setName(element.text());
             }
-            if (element.tagName()
-                       .equals(HtmlTag.H3.getTag())) {
-                if (means.size() > 0) {
-                    part.setMeans(means);
-                    means = new ArrayList<>();
+
+            if (isPart) {
+                if (!means.isEmpty()) {
+                    part.setMeans((List<String>) means.clone());
+                    means.clear();
                     parts.add(part.clone());
                 }
                 part.setType(element.text());
-
             }
-            if (element.tagName()
-                       .equals(HtmlTag.H5.getTag())) {
+            if (isMean) {
                 means.add(element.text());
             }
         }
