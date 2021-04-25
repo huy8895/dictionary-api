@@ -39,11 +39,11 @@ public class RungDict extends DictAbstract {
         conn = Jsoup.connect(this.url + word);
         try {
             doc = conn.get();
-            ArrayList<String> listIp = new ArrayList<>();
             Elements content = doc.select("div.mw-content-ltr");
             result = getResult(content.select("span:has(font), h2:has(span), h3, h5:not(h5:has(font))"));
             result.setLinkAudio(doc.select("a.ms-s-icon.btnPlay.startPlay")
                                    .attr("data-link"));
+            result.setWord(word);
         } catch (IOException | CloneNotSupportedException e) {
             e.printStackTrace();
         }

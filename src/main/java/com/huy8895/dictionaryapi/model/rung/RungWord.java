@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class RungWord {
+    private String word;
     private String pronounce;
     private String linkAudio;
     private List<Category> categories;
