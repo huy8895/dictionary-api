@@ -10,7 +10,7 @@ public class Category implements Cloneable{
     private List<Part> parts;
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Category clone() throws CloneNotSupportedException {
+        return (Category) super.clone();
     }
 }

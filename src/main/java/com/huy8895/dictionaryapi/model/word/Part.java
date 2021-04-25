@@ -10,7 +10,7 @@ public class Part implements Cloneable{
     private List<String> means;
 
     @Override
-    protected Part clone() throws CloneNotSupportedException {
+    public Part clone() throws CloneNotSupportedException {
         return (Part) super.clone();
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class RungWord {
     private String pronounce;
+    private String linkAudio;
     private List<Category> categories;
 
     RungWord addWordType(Category category) {

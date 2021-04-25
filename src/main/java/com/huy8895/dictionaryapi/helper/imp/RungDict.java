@@ -2,10 +2,7 @@ package com.huy8895.dictionaryapi.helper.imp;
 
 import com.huy8895.dictionaryapi.helper.DictAbstract;
 import com.huy8895.dictionaryapi.model.enums.HtmlTag;
-import com.huy8895.dictionaryapi.model.enums.Type;
 import com.huy8895.dictionaryapi.model.rung.RungWord;
-import com.huy8895.dictionaryapi.model.word.Example;
-import com.huy8895.dictionaryapi.model.word.Mean;
 import com.huy8895.dictionaryapi.model.word.Category;
 import com.huy8895.dictionaryapi.model.word.Part;
 import org.jsoup.Connection;
@@ -19,9 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Stack;
 
 @Component
 public class RungDict extends DictAbstract {
@@ -47,25 +41,21 @@ public class RungDict extends DictAbstract {
             doc = conn.get();
             ArrayList<String> listIp = new ArrayList<>();
             Elements content = doc.select("div.mw-content-ltr");
-            result = printSelect(content.select("span:has(font), h2:has(span), h3, h5:not(h5:has(font))"));
-        } catch (IOException e) {
+            result = getResult(content.select("span:has(font), h2:has(span), h3, h5:not(h5:has(font))"));
+            result.setLinkAudio(doc.select("a.ms-s-icon.btnPlay.startPlay")
+                                   .attr("data-link"));
+        } catch (IOException | CloneNotSupportedException e) {
             e.printStackTrace();
         }
         return result;
     }
 
-    private RungWord printSelect(Elements select_pronoun) {
+    private RungWord getResult(Elements select_pronoun) throws CloneNotSupportedException {
         RungWord rungWord = new RungWord();
         ArrayList<Category> categories = new ArrayList<>();
-        if (select_pronoun.size() == 0) {
-            System.out.println("khong tim thay ------------------------> 0 ");
-        }
-        select_pronoun.forEach(element -> System.out.println(element.tagName() + " -- " + element.text()));
         Category category = new Category();
         Part part = new Part();
         ArrayList<Part> parts = new ArrayList<>();
-//        Mean mean = new Mean();
-//        ArrayList<Mean> means = new ArrayList<>();
         ArrayList<String> means = new ArrayList<>();
         for (Element element : select_pronoun) {
             if (element.tagName()
@@ -78,12 +68,11 @@ public class RungDict extends DictAbstract {
                     if (means.size() > 0) {
                         part.setMeans(means);
                         means = new ArrayList<>();
-                        parts.add(part);
+                        parts.add(part.clone());
                     }
                     category.setParts(parts);
                     parts = new ArrayList<>();
-                    categories.add(category);
-                    category = new Category();
+                    categories.add(category.clone());
                 }
                 category.setName(element.text());
             }
@@ -92,8 +81,7 @@ public class RungDict extends DictAbstract {
                 if (means.size() > 0) {
                     part.setMeans(means);
                     means = new ArrayList<>();
-                    parts.add(part);
-                    part = new Part();
+                    parts.add(part.clone());
                 }
                 part.setType(element.text());
 
