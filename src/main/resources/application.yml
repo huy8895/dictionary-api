@@ -2,3 +2,15 @@ dictionary:
   api:
     rung: https://www.rung.vn/dict/en_vn/
     robtex: https://www.robtex.com/dns-lookup/
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+    url: jdbc:postgresql://localhost:5432/springboot_learning
+    username: postgres
+    password: 1234
