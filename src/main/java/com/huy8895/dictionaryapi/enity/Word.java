@@ -10,9 +10,12 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class Word {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
+    private String mean;
 }
