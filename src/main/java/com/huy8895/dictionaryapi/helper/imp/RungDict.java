@@ -5,6 +5,7 @@ import com.huy8895.dictionaryapi.model.enums.HtmlTag;
 import com.huy8895.dictionaryapi.model.rung.RungWord;
 import com.huy8895.dictionaryapi.model.word.Category;
 import com.huy8895.dictionaryapi.model.word.Part;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class RungDict extends DictAbstract {
     Connection conn;
     Document doc;
@@ -30,6 +32,7 @@ public class RungDict extends DictAbstract {
 
     @Override
     public RungWord search(String word) {
+        log.debug("search: {}", word);
         return connect(word);
     }
 
