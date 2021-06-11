@@ -3,6 +3,8 @@ dictionary:
     rung: https://www.rung.vn/dict/en_vn/
     robtex: https://www.robtex.com/dns-lookup/
 spring:
+  profiles:
+    active: dev
   jpa:
     hibernate:
       ddl-auto: update
