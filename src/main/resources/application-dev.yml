@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+    url: jdbc:postgresql://localhost:5432/rung-api
+    username: postgres
+    password: 1234
+
+logging:
+  level:
+    root: info
+    com:
+      huy8895:
+        dictionaryapi: debug
+redis:
+  host: localhost
+  port: 6379
+

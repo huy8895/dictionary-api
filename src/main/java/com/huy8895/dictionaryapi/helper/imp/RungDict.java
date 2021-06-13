@@ -32,7 +32,6 @@ public class RungDict extends DictAbstract {
 
     @Override
     public RungWord search(String word) {
-        log.debug("search: {}", word);
         return connect(word);
     }
 
@@ -52,6 +51,7 @@ public class RungDict extends DictAbstract {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     private RungWord getResult(Elements select_pronoun) throws CloneNotSupportedException {
         RungWord rungWord = new RungWord();
         ArrayList<Category> categories = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.huy8895.dictionaryapi.config.logging;
 
+import com.huy8895.dictionaryapi.config.Constants;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -9,6 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -43,7 +45,9 @@ public class LoggingAspect {
      */
     @Pointcut("within(com.huy8895.dictionaryapi.repository..*)" +
             " || within(com.huy8895.dictionaryapi.service..*)" +
-            " || within(com.huy8895.dictionaryapi.controller.*)")
+            " || within(com.huy8895.dictionaryapi.controller..*) " +
+            " || within(com.huy8895.dictionaryapi.helper..*) " +
+            "")
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
@@ -69,7 +73,7 @@ public class LoggingAspect {
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
 
         logger(joinPoint).error(
-                "Exception in {}() with cause = \'{}\' and exception = \'{}\'",
+                "Exception in {}() with cause = '{}' and exception = '{}'",
                 joinPoint.getSignature()
                          .getName(),
                 e.getCause() != null ? e.getCause() : "NULL",
@@ -95,14 +99,18 @@ public class LoggingAspect {
      */
     @Around("applicationPackagePointcut() && springBeanPointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        boolean isDevProfile = env.acceptsProfiles(Profiles.of(Constants.SPRING_PROFILE_DEVELOPMENT));
         Logger log = logger(joinPoint);
-        System.out.println("logAround = " + joinPoint);
-        log.info("Enter: {}() with argument[s] = {}", joinPoint.getSignature()
-                                                               .getName(), Arrays.toString(joinPoint.getArgs()));
+        if (isDevProfile) {
+            log.info("Enter: {}() with argument[s] = {}", joinPoint.getSignature()
+                                                                   .getName(), Arrays.toString(joinPoint.getArgs()));
+        }
         try {
             Object result = joinPoint.proceed();
-            log.info("Exit: {}() with result = {}", joinPoint.getSignature()
-                                                             .getName(), result);
+            if (isDevProfile) {
+                log.info("Exit: {}() with result = {}", joinPoint.getSignature()
+                                                                 .getName(), result);
+            }
             return result;
         } catch (IllegalArgumentException e) {
             log.error("Illegal argument: {} in {}()", Arrays.toString(joinPoint.getArgs()), joinPoint.getSignature()
