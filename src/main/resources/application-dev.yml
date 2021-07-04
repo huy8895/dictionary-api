@@ -25,4 +25,6 @@ redis:
   port: 6379
   timeout: 360
   database: 0
+  cache:
+    enabled: true
 

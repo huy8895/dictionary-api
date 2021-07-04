@@ -9,4 +9,10 @@ import java.lang.annotation.*;
 @Documented
 @Order(0)
 public @interface RedisCache {
+
+    String value() default "";
+
+    String cacheName() default "";
+
+    int expire() default 1;
 }
