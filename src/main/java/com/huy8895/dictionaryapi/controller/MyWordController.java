@@ -14,7 +14,7 @@ public class MyWordController {
     private final WordService wordService;
 
 
-    @PostMapping()
+    @PostMapping
     public Word create(@RequestBody Word word) {
         return wordService.create(word);
     }

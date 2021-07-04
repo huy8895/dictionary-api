@@ -1,5 +1,6 @@
 package com.huy8895.dictionaryapi.controller;
 
+import com.huy8895.dictionaryapi.config.aop.RedisCache;
 import com.huy8895.dictionaryapi.enity.Word;
 import com.huy8895.dictionaryapi.model.rung.RungWord;
 import com.huy8895.dictionaryapi.repository.WordRepository;
@@ -17,6 +18,7 @@ public class RungAPIController {
     private final RungWordService rungWordService;
 
     @GetMapping("/{word}")
+    @RedisCache
     public RungWord getRungWord(@PathVariable String word) {
         return rungWordService.getRungWord(word);
     }

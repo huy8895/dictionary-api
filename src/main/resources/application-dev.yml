@@ -23,4 +23,6 @@ logging:
 redis:
   host: localhost
   port: 6379
+  timeout: 360
+  database: 0
 
