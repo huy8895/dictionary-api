@@ -57,7 +57,7 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public Word update(Word word) {
-        return null;
+        return wordRepository.save(word);
     }
 
     @Override

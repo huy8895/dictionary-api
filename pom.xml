@@ -109,6 +109,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>my-dictionary-api</finalName>
     </build>
 
 </project>

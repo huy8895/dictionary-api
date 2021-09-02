@@ -29,4 +29,9 @@ public class MyWordController {
         return wordService.get(id);
     }
 
+    @PutMapping
+    public Word updateWord(@RequestBody Word word) {
+        return wordService.update(word);
+    }
+
 }
